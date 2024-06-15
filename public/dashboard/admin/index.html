@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link href="/output.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        .active {
+            background-color: #1D4ED8; 
+        }
+        *{
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 ">
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="h-screen fixed w-64 bg-gray-800 text-white flex flex-col justify-between drop-shadow-lg">
+            <div>
+                <div class="p-4 text-2xl font-bold border-b border-blue-700 text-center">Senda</div>
+                <nav id="sidebar" class="flex-1 p-4 space-y-4">
+                    <a href="#dashboard" class="block px-4 py-2 rounded hover:bg-blue-700 active">Dashboard</a>
+                    <a href="#manage-employee" class="block px-4 py-2 rounded hover:bg-blue-700">Manage Employee</a>
+                    <a href="#manage--project" class="block px-4 py-2 rounded hover:bg-blue-700">Manage Project</a>
+                </nav>
+            </div>
+            <div class="p-4">
+                <button class="w-full px-4 py-2 bg-blue-800 rounded hover:bg-blue-700" onclick="logout()">Sign Out</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 ml-64 p-10 text-white" >
+            <!-- DASHBOARD -->
+            <section id="dashboard">
+                <div class="flex w-full gap-4 mb-10">
+                    <div class="flex-1 p-5 rounded-lg flex items-center justify-between bg-gradient-to-r from-green-900 to-green-700 transform transition duration-300 hover:scale-105 hover:shadow-lg">
+                        <div>
+                            <h2 class="text-xl font-bold">Employee</h2>
+                            <span id="employee-count" class="text-3xl font-semibold">12</span>
+                        </div>
+                        <i class="fa-regular fa-user text-4xl"></i>
+                    </div>
+
+                    <div class="flex-1 p-5 rounded-lg flex items-center justify-between bg-gradient-to-r from-blue-900 to-blue-700 transform transition duration-300 hover:scale-105 hover:shadow-lg">
+                        <div>
+                            <h2 class="text-xl font-bold">Project</h2>
+                            <span id="project-count" class="text-3xl font-semibold">12</span>
+                        </div>
+                        <i class="fa-solid fa-code text-4xl"></i>
+                    </div>
+
+                    <div class="flex-1 p-5 rounded-lg flex items-center justify-between bg-gradient-to-r from-purple-900 to-purple-700 transform transition duration-300 hover:scale-105 hover:shadow-lg">
+                        <div>
+                            <h2 class="text-xl font-bold">Incoming Project</h2>
+                            <span id="incoming-proj-count" class="text-3xl font-semibold">12</span>
+                        </div>
+                        <i class="fa-solid fa-file text-4xl"></i>
+                    </div>
+                </div>
+                <h1 class="text-3xl font-bold text-center mb-5">Chart Report 2024</h1>  
+                <div class="container grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+                    <div class="isolate rounded-xl bg-white/20 shadow-lg ring-1 ring-black/5 p-4">
+                        <canvas id="doughnut" class="w-full h-full"></canvas>
+                    </div>
+                    <div class="isolate rounded-xl bg-white/20 shadow-lg ring-1 ring-black/2 p-4">
+                        <canvas id="bar-graph" class="w-full h-full"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MANAGE EMPLOYEE -->
+            <h1 class="text-3xl font-bold text-center mb-2" id="manage-employee">Manage Employee</h1>  
+            <section  class="text-white w-4/5 mx-auto px-10">
+                <h2 class="text-xl font-bold p-2">Create Employee</h2>
+                <div class="bg-green-600 bg-opacity-30 backdrop-blur-lg rounded-xl shadow-lg ring-1 ring-black/20 p-4 text-black">
+                    <form class="space-y-4" onsubmit="createEmployee(event)">
+                        <div>
+                            <label for="firstname" class="block text-sm font-medium text-gray-300">First Name</label>
+                            <input type="text" id="create--firstname" name="firstname" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1" required placeholder="First Name">
+                        </div>
+                        <div>
+                            <label for="lastname" class="block text-sm font-medium text-gray-300">Last Name</label>
+                            <input type="text" id="create--lastname" name="lastname" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1" required placeholder="Last Name">
+                        </div>
+                        <div>
+                            <label for="username" class="block text-sm font-medium text-gray-300">Username</label>
+                            <input type="text" id="create--username" name="username" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1" required placeholder="Username">
+                        </div>
+                      
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-300">Password</label>
+                            <input type="password" id="create--password" name="password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1" required placeholder="Password">
+                        </div>
+                        <div>
+                            <label for="departmentId" class="block text-sm font-medium text-gray-300">Department ID</label>
+                            <select id="create--departmentId" name="departmentId" class="select-departmentId mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1" required>
+                                <option value="" disabled selected>Select Department</option>
+                            </select>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="px-4 py-2 bg-green-700 rounded hover:bg-green-800 text-white w-full">Register Employeee</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div>
+                    <!-- DELETE EMPLOYEE -->
+                    <h2 class="text-xl font-bold p-2 mt-2 text-white">Delete Employee</h2>
+                    <div class="bg-red-600 bg-opacity-30 backdrop-blur-lg rounded-xl shadow-lg ring-1 ring-black/20 p-4 text-white">
+                        <form class="space-y-4" id="delete-employee-form">
+                            <label for="id--del" class="block text-sm font-medium text-gray-300">ID</label>
+                            <input type="number" id="id--del" name="employeeId" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-2 text-black" required placeholder="Enter Employee ID">
+                            <div class="text-center">
+                                <button id="deleteButton" type="button" class="px-4 py-2 bg-red-700 rounded hover:bg-red-800 text-white w-full">Delete Employee</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Confirmation Modal -->
+                <div id="confirmationModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+                    <div class="bg-gray-900 p-5 rounded-lg shadow-lg text-center">
+                        <h3 class="text-lg font-bold mb-4 text-white">Are you sure you want to delete this employee?</h3>
+                        <div class="flex justify-center space-x-4">
+                            <button id="confirmYes" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700" onclick="deleteEmployee()">Yes</button>
+                            <button id="confirmNo" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">No</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- UPDATE EMPLOYEE -->
+                <div>
+                    <h2 class="text-xl font-bold p-2 mt-2">Update Employeee</h2>
+                    <div class="bg-blue-600 bg-opacity-30 backdrop-blur-lg rounded-xl shadow-lg ring-1 ring-black/20 p-4 text-black">
+                        <form class="space-y-4" onsubmit="updateEmployee(event)">
+                            <div>
+                                <label for="id" class="block text-sm font-medium text-gray-300">ID</label>
+                                <input type="number" id="update--id" name="employeeId" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1" required placeholder="Employee Id">
+                            </div>
+                            <div>
+                                <label for="firstname" class="block text-sm font-medium text-gray-300">First Name</label>
+                                <input type="text" id="update--firstname" name="firstname" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1" placeholder="First Name">
+                            </div>
+                            <div>
+                                <label for="lastname" class="block text-sm font-medium text-gray-300">Last Name</label>
+                                <input type="text" id="update--lastname" name="lastname" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1" placeholder="Last Name">
+                            </div>
+                            <div>
+                                <label for="username" class="block text-sm font-medium text-gray-300">Username</label>
+                                <input type="text" id="update--username" name="username" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1" placeholder="Username">
+                            </div>
+                          
+                            <div>
+                                <label for="password" class="block text-sm font-medium text-gray-300">Password</label>
+                                <input type="password" id="update--password" name="password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1" placeholder="Password">
+                            </div>
+                            <div>
+                                <label for="departmentId" class="block text-sm font-medium text-gray-300">Department ID</label>
+                                <select id="update--departmentId" name="departmentId" class="select-departmentId mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1" >
+                                    <option value="" disabled selected>Select Department</option>
+                                </select>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="px-4 py-2 bg-blue-700 rounded hover:bg-blue-800 text-white w-full">Update Employee</button>
+                            </div>
+                        </form>
+                        
+                        
+                    </div>
+                </div>
+            </section>
+
+       <!-- MANAGE PROJECT -->
+            <h1 class="text-3xl font-bold text-center mt-10 text-white" id="manage--project">Manage Project</h1>
+            <section class="text-white w-4/5 mx-auto px-10">
+            <div class="flex justify-between items-center mb-5">
+                <h2 class="text-xl font-bold">Project Overview</h2>
+                <input type="text" id="project-search" class="p-2 rounded bg-gray-700 text-white" placeholder="Search Projects...">
+            </div>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg mb-5">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-700">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Project ID</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Name</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Department Name</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-gray-700 divide-y divide-gray-600" id="projects-overview">
+                        Fetching Projects...
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ADD PROJECT -->
+            <h2 class="text-xl font-bold mb-5">Add Project</h2>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg mb-5">
+                <form class="space-y-4" onsubmit="createProject(event)">
+                    <div>
+                        <label for="project-name" class="block text-sm font-medium text-gray-300">Project Name</label>
+                        <input type="text" id="project-name" name="name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1 text-black" required placeholder="Enter Project Name">
+                    </div>
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-gray-300">Status</label>
+                        <select id="status" name="statusId" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1 text-black" required>  
+                        </select>
+                    </div>
+                    <div>
+                        <label for="department-id" class="block text-sm font-medium text-gray-300">Department ID</label>
+                        <select id="create-project-departmentId" name="departmentId" class="select-departmentId mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1 text-black" required>
+                            <option value="" disabled selected>Select Department</option>
+                        </select>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 text-white w-full">Add Project</button>
+                    </div>
+                </form>
+            </div>
+
+
+            <!-- ASSIGN TASK TO EMPLOYEEE -->
+            <h2 class="text-xl font-bold mb-5">Assign Task to Employee</h2>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg mb-5">
+                <form class="space-y-4" onsubmit="assignTask(event)">
+                    <div>
+                        <label for="employee-id" class="block text-sm font-medium text-gray-300">Employee ID</label>
+                        <input type="number" id="task-name" name="employeeId" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1 text-black" required placeholder="Enter Employee ID">
+                    </div>
+                    <div>
+                        <label for="task-name" class="block text-sm font-medium text-gray-300">Project Name</label>
+                        <select id="assign-task-projectId" class="select-projectId mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1 text-black" required>
+                            <option value="" disabled selected>Select Project</option>
+                        </select>
+                    </div>
+                    <div id="assign-task-taskName" class="hidden">
+                        <label for="task-name" class="block text-sm font-medium text-gray-300">Task Name</label>
+                        <select name="taskId" class="select-taskId mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-1 text-black" required>
+                            <option value="" disabled selected>Select Task</option>
+                        </select>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 text-white w-full">Assign Task</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+
+        </div>
+
+    </div>
+
+    <script src="../global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../Charts/charts.js"></script>
+    <script src="../dashboard/admin/main.js"></script>
+    <script>
+        
+        document.getElementById('project-search').addEventListener('input', function() {
+            let filter = this.value.toUpperCase();
+            let rows = document.getElementById('projects-overview').getElementsByTagName('tr'); //Search by for project name
+            for (let i = 0; i < rows.length; i++) {
+                let td = rows[i].getElementsByTagName('td')[1];
+                if (td) {
+                    let txtValue = td.textContent || td.innerText;
+                    rows[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? '' : 'none';
+                }
+            }
+        });        
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('#sidebar a');
+
+            links.forEach(link => {
+                link.addEventListener('click', () => {
+                    links.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                });
+            });
+        });
+
+
+    document.getElementById('deleteButton').addEventListener('click', function() {
+        document.getElementById('confirmationModal').classList.remove('hidden');
+    });
+
+    document.getElementById('confirmNo').addEventListener('click', function() {
+        document.getElementById('confirmationModal').classList.add('hidden');
+    });
+
+   
+    document.getElementById('confirmYes').addEventListener('click', function() {
+       
+        document.getElementById('confirmationModal').classList.add('hidden');
+    });
+
+    document.getElementById("assign-task-projectId").addEventListener("change", function(event) {
+        displayProjectTasks(Number(event.target.value));
+
+        const selectTaskHTML = document.getElementById("assign-task-taskName");
+        if (selectTaskHTML.classList.contains('hidden')) selectTaskHTML.classList.remove('hidden');
+    });
+    </script>
+</body>
+</html>
