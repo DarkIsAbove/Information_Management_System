@@ -2,6 +2,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+DROP DATABASE IF EXISTS info_management;
 CREATE DATABASE info_management;
 USE info_management;
 
@@ -219,7 +220,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 INSERT INTO `user` (`id`, `username`, `password`, `role`, `employeeId`, `createdAt`, `updatedAt`) VALUES
 (14, 'john_doe', '$2b$15$R93UKR91Feb/MQJRsuKiPeNmkfvEPPnsHkPpJrM84YmB/OShf7z6.', 'EMPLOYEE', 2, '2024-06-13 07:43:09', '0000-00-00 00:00:00'),
-(15, 'alice_smith', '$2b$15$lHH/oKqguhwgd6pQLehPBuF.uNRmb2j1lhNHhhNVIIuyT9QxBBEIW', 'ADMIN', 3, '2024-06-13 07:43:09', '0000-00-00 00:00:00'),
+(15, 'alice_smith', '$2b$15$lHH/oKqguhwgd6pQLehPBuF.uNRmb2j1lhNHhhNVIIuyT9QxBBEIW', 'ADMIN', NULL, '2024-06-13 07:43:09', '0000-00-00 00:00:00'),
 (16, 'michael_johnson', '$2b$15$8afqu0yitmjEC0R3BScADOFoFxnOKqQhGT6lmWQIHu64fIGOnJiiG', 'EMPLOYEE', 4, '2024-06-13 07:43:09', '0000-00-00 00:00:00'),
 (17, 'emily_brown', '$2b$15$MMiMfuJeCJjR8ezWZX/7Au6tZRN8ZxincK6AMP6Y8gDO25eBYrEiS', 'EMPLOYEE', 5, '2024-06-13 07:43:09', '0000-00-00 00:00:00'),
 (18, 'james_wilson', '$2b$15$oBDEoTLGo2nHGLAj1gnZjeFt8BtcjQ6ka/qVjJen9OmBfWHvddkuS', 'EMPLOYEE', 6, '2024-06-13 07:43:09', '0000-00-00 00:00:00'),
@@ -248,7 +249,8 @@ ALTER TABLE `status`
   ADD PRIMARY KEY (`id`);
 ALTER TABLE `task`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `project_fk` (`projectId`);
+  ADD KEY `project_fk` (`projectId`),
+  ADD KEY `task_status` (`statusId`);
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
   ADD KEY `employee_fk` (`employeeId`);
@@ -273,7 +275,8 @@ ALTER TABLE `project`
   ADD CONSTRAINT `department_key` FOREIGN KEY (`departmentId`) REFERENCES `department` (`id`),
   ADD CONSTRAINT `status_key` FOREIGN KEY (`statusId`) REFERENCES `status` (`id`);
 ALTER TABLE `task`
-  ADD CONSTRAINT `project_fk` FOREIGN KEY (`projectId`) REFERENCES `project` (`id`);
+  ADD CONSTRAINT `project_fk` FOREIGN KEY (`projectId`) REFERENCES `project` (`id`),
+  ADD CONSTRAINT `task_status` FOREIGN KEY (`statusId`) REFERENCES `status` (`id`);
 ALTER TABLE `user`
   ADD CONSTRAINT `employee_fk` FOREIGN KEY (`employeeId`) REFERENCES `employee` (`id`);
 COMMIT;
