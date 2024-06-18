@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import express from "express";
 import cookieParser from 'cookie-parser';
-import { connectDatabase } from './database/database.js';
+import generateDatabase from './database/generate.js';
 import winston from 'winston';
 import expressWinston from 'express-winston';
 import cron from "node-cron";
@@ -86,7 +86,7 @@ app.use(expressWinston.errorLogger({
 }))
 
 app.listen(PORT, (err) => {
-    connectDatabase().then(data => {
+    generateDatabase().then(data => {
         if (err) {
             return console.log(err);
         }   
