@@ -1,9 +1,11 @@
 import 'dotenv/config';
 import express from "express";
 import cookieParser from 'cookie-parser';
-import { connectDatabase } from './database/database.js';
+import generateDatabase from './database/generate.js';
 import winston from 'winston';
 import expressWinston from 'express-winston';
+import cron from "node-cron";
+import backup from './database/backup.js';
 
 const app = express();
 const PORT = 8080;  
@@ -78,15 +80,22 @@ app.use(expressWinston.errorLogger({
     msg: "HTTP {{req.method}} {{req.url}}", // optional: customize the default logging message. E.g. "{{res.statusCode}} {{req.method}} {{res.responseTime}}ms {{req.url}}"
     expressFormat: true, // Use the default Express/morgan request formatting. Enabling this will override any msg if true. Will only output colors with colorize set to true
     colorize: true, // Color the text and status code, using the Express/morgan color palette (text: gray, status: default green, 3XX cyan, 4XX yellow, 5XX red).
-    ignoreRoute: function (req, res) { return false; } // optional: allows to skip some log messages based on request and/or response
+    ignoreRoute: function (req, res) { return false; }
+    
+     // optional: allows to skip some log messages based on request and/or response
 }))
 
 app.listen(PORT, (err) => {
-    connectDatabase().then(data => {
+    generateDatabase().then(data => {
         if (err) {
             return console.log(err);
         }   
     
         console.log(`http://localhost:${PORT}`);
+
+        cron.schedule("2 * * * * *", () => {
+            console.log("backup is sent to the drive!");
+            backup();
+        });
     });
 });
