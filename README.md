@@ -11,9 +11,9 @@ A system for information.
 ### Quick Start
 
 ```bash
-    git clone https://github.com/RafhaelHailar/Information_Management_System_Boiler_Plate.git
+    git clone https://github.com/DarkIsAbove/Information_Management_System.git
 
-    cd Information_Management_System_Boiler_Plate
+    cd Information_Management_System
 
     npm i
 ```
@@ -21,7 +21,10 @@ A system for information.
 Create and Set the environment variable values.
 ```bash
     cp .env.example .env
+```
 
+in `.env` file.
+```bash
     DATABASE_HOST=localhost // required. where the database is hosted 
     DATABASE_USER=root // required. username of the one accessing the database
     DATABASE_PASSWORD= // required. password of that one.
@@ -30,14 +33,8 @@ Create and Set the environment variable values.
 
     ACCESS_TOKEN_SECRET=mysecret // use for authentication
     REFRESH_TOKEN_SECRET=myrefreshsecret // use for re authentication
-```
 
-Open another bash terminal to run tailwind.
-
-```bash
-    cd Information_Management_System_Boiler_Plate
-
-    npx tailwindcss -i ./public/input.css -o ./public/output.css --watch
+    GOOGLE_DRIVE_FOLDER=1y4I626u4H7E6-GveAvWRzGW4Sic8aIzW // google drive folder where database backup will be inserted.
 ```
 
 In the other bash terminal, Run the app.
@@ -53,6 +50,7 @@ In the other bash terminal, Run the app.
   - [Table of Contents](#table-of-contents)
   - [Features](#features)
   - [Folder Structure Overview](#folder-structure-overview)
+  - [Commands](#commands)
 
 ## Features
 
@@ -85,3 +83,16 @@ In the other bash terminal, Run the app.
 - **routes** - The routes folder defines the application's route handlers. Each route file sets up endpoints and maps them to the appropriate controller functions.
 - **services** - The services folder contains business logic and interacts with the database. Services are used by controllers to perform operations such as fetching, creating, updating, or deleting data.
 - **validators** - The validators folder is for validating an object to see whether it have the same structure as the one we are comparing it to.
+
+## **Commands**
+
+**Database restoration.**
+
+Stop the application, run in the bash terminal. 
+
+Make sure you are in the app directory `/Information_Management_System`.
+
+Run:
+```bash
+    npm run database:restore
+```
